@@ -13,7 +13,11 @@ LOCAL_INCLUDES += $(LOCAL_PATH)
 LOCAL_CFLAGS  += -DQEMU_HARDWARE
 QEMU_HARDWARE := true
 
+ifeq ($(TARGET_OS),gnu_linux)
+LOCAL_LDLIBS := -ldl
+else
 LOCAL_SHARED_LIBRARIES += libdl
+endif
 
 LOCAL_SRC_FILES += hardware.c
 

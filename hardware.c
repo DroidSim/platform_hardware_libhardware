@@ -16,7 +16,9 @@
 
 #include <hardware/hardware.h>
 
+#ifndef ANDROID_GNU_LINUX
 #include <cutils/properties.h>
+#endif
 
 #include <dlfcn.h>
 #include <string.h>
@@ -165,6 +167,7 @@ int hw_get_module_by_class(const char *class_id, const char *inst,
 
     /* First try a property specific to the class and possibly instance */
     snprintf(prop_name, sizeof(prop_name), "ro.hardware.%s", name);
+#ifndef ANDROID_GNU_LINUX
     if (property_get(prop_name, prop, NULL) > 0) {
         if (hw_module_exists(path, sizeof(path), name, prop) == 0) {
             goto found;
@@ -180,6 +183,7 @@ int hw_get_module_by_class(const char *class_id, const char *inst,
             goto found;
         }
     }
+#endif
 
     /* Nothing found, try the default */
     if (hw_module_exists(path, sizeof(path), name, "default") == 0) {
